@@ -40,6 +40,8 @@ export function createBoard(textureObject, position, angle) {
 	const mass = 0;
 
 	let floorSize = {width: 3.4, height: 0.1, depth: 7.5};
+	let compoundShape = new Ammo.btCompoundShape();
+	let groupMesh = new THREE.Group();
 
 	//. . . osv...
 

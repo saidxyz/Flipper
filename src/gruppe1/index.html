@@ -20,13 +20,15 @@
         </div>
     </div>
     <body>
-        <script src="../../../lib/ammo/ammo.js"></script>
-        <script type="module">
-            import {main} from "./script.js";
-            Ammo().then(async function (AmmoLib) {
-                Ammo = AmmoLib;
-                main();
-            });
-        </script>
+    <script src="./lib/ammo/ammo.js"></script>
+    <script type="module">
+        import { main } from "./script.js";
+
+        Ammo().then(function (AmmoLib) {
+            Ammo = AmmoLib;
+            main(Ammo);
+        });
+    </script>
+
     </body>
 </html>
