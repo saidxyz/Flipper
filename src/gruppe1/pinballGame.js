@@ -53,6 +53,8 @@ export function createBoard(textureObject, position, angle) {
 	let edge7Size = { width: 1.2, height: 0.3, depth: 0.1 };
 	let edge8Size = { width: 0.8, height: 0.3, depth: 0.1 };
 	let edge9Size = { width: 0.1, height: 0.3, depth: 5.5 };
+	let edge10Size = { width: 0.8, height: 0.3, depth: 0.1 };
+	let edge11Size = { width: 0.8, height: 0.3, depth: 0.1 };
 	let leader1Size = { width: -1.3, height: 0.3, depth: 0.1 };
 
 	let floorPosition = { x: 0.5, y: 0, z: 0 };
@@ -66,6 +68,8 @@ export function createBoard(textureObject, position, angle) {
 	let leader3Position = { x: -0.8, y: 0.15, z: -1.4 };
 	let leader4Position = { x: -0.8, y: 0.15, z: -0.4 };
 	let leader5Position = { x: -0.7, y: 0.15, z: 1.2 };
+	let leader6Position = { x: 0.8, y: 0.15, z: 0.4 };
+	let leader7Position = { x: 0.8, y: 0.15, z: -0.6 };
 
 	const floorMaterial = new THREE.MeshPhongMaterial({ color: 0xf78a1d });
 	const edgeMaterial = new THREE.MeshPhongMaterial({ color: 0xFF0000 });
@@ -167,6 +171,20 @@ export function createBoard(textureObject, position, angle) {
 	meshLeader5.position.set(leader5Position.x, leader5Position.y, leader5Position.z);
 	meshLeader5.rotateY(Math.PI/3);
 	groupMesh.add(meshLeader5);
+
+	// Leader5:
+	let geoLeader6 = new THREE.BoxGeometry(edge10Size.width, edge10Size.height, edge10Size.depth);
+	let meshLeader6 = new THREE.Mesh(geoLeader6, edgeMaterial);
+	meshLeader6.position.set(leader6Position.x, leader6Position.y, leader6Position.z);
+	meshLeader6.rotateY(Math.PI/3);
+	groupMesh.add(meshLeader6);
+
+	// Leader6:
+	let geoLeader7 = new THREE.BoxGeometry(edge11Size.width, edge11Size.height, edge11Size.depth);
+	let meshLeader7 = new THREE.Mesh(geoLeader7, edgeMaterial);
+	meshLeader7.position.set(leader7Position.x, leader7Position.y, leader7Position.z);
+	meshLeader7.rotateY(Math.PI+2.5);
+	groupMesh.add(meshLeader7);
 
 	// AMMO:
 	let compoundShape = new Ammo.btCompoundShape();
