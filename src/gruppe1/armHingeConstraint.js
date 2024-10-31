@@ -149,7 +149,7 @@ function createAnchor(position, radius, angle) {
 	mesh.userData.physicsBody = rigidBody;
 	phy.ammoPhysicsWorld.addRigidBody(
 		rigidBody,
-		COLLISION_GROUP_SPHERE,
+		COLLISION_GROUP_HINGE_SPHERE,
 		COLLISION_GROUP_SPHERE | COLLISION_GROUP_BOX | COLLISION_GROUP_BUMPER | COLLISION_GROUP_PLANE);
 	phy.rigidBodies.push(mesh);
 
