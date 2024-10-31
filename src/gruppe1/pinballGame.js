@@ -46,16 +46,16 @@ export function createBoard(textureObject, position, angle) {
 	let floorSize = { width: 3.4, height: 0.1, depth: 7.5 };
 	let edge1Size = { width: 0.1, height: 0.3, depth: 7.5 };
 	let edge2Size = { width: 3.4, height: 0.3, depth: 0.1 };
+	let edge3Size = { width: 3.4, height: 0.3, depth: 0.1 };
 	let leader1Size = { width: 1.3, height: 0.3, depth: 0.1 };
 
 	let floorPosition = { x: 0, y: 0, z: 0 };
 	let leftEdgePosition = { x: -1.65, y: 0.15, z: 0 };
-	//let rightEdgePosition = { x: 1.65, y: 0.15, z: 0 };
 	let leader1Position = { x: 1.2, y: 0.15, z: -2.9 };
 
 	const floorMaterial = new THREE.MeshPhongMaterial({ color: 0xf78a1d });
 	const edgeMaterial = new THREE.MeshPhongMaterial({ color: 0xFF0000 });
-	const bumperMaterial = new THREE.MeshPhongMaterial({ color: 0x0ef21a, transparent: false });
+
 
 	// THREE:
 	let groupMesh = new THREE.Group();
@@ -68,6 +68,7 @@ export function createBoard(textureObject, position, angle) {
 	meshFloor.position.set(floorPosition.x, floorPosition.y, floorPosition.z);
 	meshFloor.castShadow = true;
 	groupMesh.add(meshFloor);
+
 	// Left edge:
 	let geoLeftEdge = new THREE.BoxGeometry(edge1Size.width, edge1Size.height, edge1Size.depth);
 	let meshLeftEdge = new THREE.Mesh(geoLeftEdge, edgeMaterial);
@@ -80,6 +81,13 @@ export function createBoard(textureObject, position, angle) {
 	// Leader1:
 	let geoLeader1 = new THREE.BoxGeometry(edge2Size.width, edge2Size.height, edge2Size.depth);
 	let meshLeader1 = new THREE.Mesh(geoLeader1, edgeMaterial);
+	meshLeader1.position.set(leader1Position.x, leader1Position.y, leader1Position.z);
+	meshLeader1.rotateY(-Math.PI/4);
+	groupMesh.add(meshLeader1);
+
+	// Leader1:
+	let geoLeader2 = new THREE.BoxGeometry(edge3Size.width, edge3Size.height, edge3Size.depth);
+	let meshLeader2 = new THREE.Mesh(geoLeader2, edgeMaterial);
 	meshLeader1.position.set(leader1Position.x, leader1Position.y, leader1Position.z);
 	meshLeader1.rotateY(-Math.PI/4);
 	groupMesh.add(meshLeader1);
@@ -103,8 +111,8 @@ export function createBoard(textureObject, position, angle) {
 	let transLeader1 = new Ammo.btTransform();
 	transLeader1.setIdentity();
 	transLeader1.setOrigin(new Ammo.btVector3(leader1Position.x, leader1Position.y, leader1Position.z));
-	let quaternion = new Ammo.btQuaternion(meshLeader1.quaternion.x, meshLeader1.quaternion.y, meshLeader1.quaternion.z, meshLeader1.quaternion.w);
-	transLeader1.setRotation(quaternion);
+	let quaternion = meshLeader1.quaternion;
+	transLeader1.setRotation(new Ammo.btQuaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w));
 	compoundShape.addChildShape(transLeader1, leader1Shape);
 
 	compoundShape.setMargin(0.05);
@@ -124,10 +132,41 @@ export function createBoard(textureObject, position, angle) {
  */
 function addBumpers(angle) {
 	let bumper1Size = {radiusTop:0.2, radiusBottom: 0.2, height: 0.4};
-	let bumper1Position = {x: 0.45, y: bumper1Size.height/2, z:1.3};
+	let bumper1Position = {x: 0, y: bumper1Size.height/2, z:0};
 	bumper1Position.y += (-Math.tan(angle) * bumper1Position.z);
 	addBumper(angle, bumper1Size, bumper1Position, "bumper1", 200);
-	// osv...
+
+
+	let bumper2Size = {radiusTop:0.2, radiusBottom: 0.2, height: 0.4};
+	let bumper2Position = {x: 1, y: bumper2Size.height/2, z:1.3};
+	bumper2Position.y += (-Math.tan(angle) * bumper2Position.z);
+	addBumper(angle, bumper2Size, bumper2Position, "bumper2", 200);
+
+
+	let bumper3Size = {radiusTop:0.1, radiusBottom: 0.1, height: 0.4};
+	let bumper3Position = {x: -1, y: bumper3Size.height/2, z:1};
+	bumper3Position.y += (-Math.tan(angle) * bumper3Position.z);
+	addBumper(angle, bumper3Size, bumper3Position, "bumper3", 200);
+
+
+	let bumper4Size = {radiusTop:0.1, radiusBottom: 0.1, height: 0.4};
+	let bumper4Position = {x: -0.35, y: bumper4Size.height/100, z:1.5};
+	bumper2Position.y += (-Math.tan(angle) * bumper4Position.z);
+	addBumper(angle, bumper4Size, bumper4Position, "bumper4", 200);
+
+
+
+	let bumper5Size = {radiusTop:0.1, radiusBottom: 0.1, height: 0.4};
+	let bumper5Position = {x: 1.25, y: bumper5Size.height/2, z:-2};
+	bumper5Position.y += (-Math.tan(angle) * bumper5Position.z);
+	addBumper(angle, bumper5Size, bumper5Position, "bumper5", 200);
+
+	let bumper6Size = {radiusTop:0.1, radiusBottom: 0.1, height: 0.4};
+	let bumper6Position = {x: 0.8, y: bumper6Size.height/2, z:-2};
+	bumper6Position.y += (-Math.tan(angle) * bumper6Position.z);
+	addBumper(angle, bumper6Size, bumper6Position, "bumper6", 200);
+
+
 }
 
 /**
@@ -135,7 +174,7 @@ function addBumpers(angle) {
  */
 function addBumper(angle, size, position, name, points) {
 	const material = new THREE.MeshPhongMaterial({color: 0x0ef21a, transparent: false});
-	let geoBumper = new THREE.CylinderGeometry(size.radiusTop, size.radiusBottom, size.height);
+	let geoBumper = new THREE.CylinderGeometry(size.radiusTop, size.radiusBottom, size.height, size.width, size.radialSegments, size.openEnded, size.thetaStart, size.thetaLength);
 	let meshBumper = new THREE.Mesh(geoBumper, material);
 	meshBumper.name =  name;
 	meshBumper.points = points;

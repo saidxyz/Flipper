@@ -45,7 +45,6 @@ export function createFlipperArm(mass , color, position, leftHinged, name, angle
 	const biasFactor = 0.3;
 	const relaxationFactor = 1.0;
 	hingeConstraint.setLimit( lowerLimit, upperLimit, softness, biasFactor, relaxationFactor);
-	//hingeConstraint.enableAngularMotor(true, 0, .001);	//NB! Denne trengs ikke her, men siste parameter påvirker.
 	phy.ammoPhysicsWorld.addConstraint( hingeConstraint, false );
 
 	// NB! LA STÅ!
