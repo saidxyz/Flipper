@@ -43,16 +43,29 @@ export function createBoard(textureObject, position, angle) {
 	//Brettet skal stå i ro:
 	const mass = 0;
 
-	let floorSize = { width: 3.4, height: 0.1, depth: 7.5 };
+	let floorSize = { width: 4.4, height: 0.1, depth: 7.5 };
 	let edge1Size = { width: 0.1, height: 0.3, depth: 7.5 };
-	let edge2Size = { width: 3.4, height: 0.3, depth: 0.1 };
+	let edge2Size = { width: 2.2, height: 0.3, depth: 0.1 };
 	let edge3Size = { width: 1.8, height: 0.3, depth: 0.1 };
-	let leader1Size = { width: 1.3, height: 0.3, depth: 0.1 };
+	let edge4Size = { width: 4.4, height: 0.3, depth: 0.5 };
+	let edge5Size = { width: 4.4, height: 0.3, depth: 0.1 };
+	let edge6Size = { width: 1.2, height: 0.3, depth: 0.1 };
+	let edge7Size = { width: 1.2, height: 0.3, depth: 0.1 };
+	let edge8Size = { width: 0.8, height: 0.3, depth: 0.1 };
+	let edge9Size = { width: 0.1, height: 0.3, depth: 5.5 };
+	let leader1Size = { width: -1.3, height: 0.3, depth: 0.1 };
 
-	let floorPosition = { x: 0, y: 0, z: 0 };
+	let floorPosition = { x: 0.5, y: 0, z: 0 };
 	let leftEdgePosition = { x: -1.65, y: 0.15, z: 0 };
-	let leader1Position = { x: 1.2, y: 0.15, z: -2.9 };
+	let betweenEdgePosition = { x: 2, y: 0.15, z: 1 };
+	let rightEdgePosition = { x: 2.65, y: 0.15, z: 0 };
+	let topEdgePosition = { x: 0.5, y: 0.15, z: -3.5 };
+	let bottomEdgePosition = { x: 0.5, y: 0.15, z: 3.7 };
+	let leader1Position = { x: 1.89, y: 0.15, z: -2.9 };
 	let leader2Position = { x: -0.8, y: 0.15, z: -2 };
+	let leader3Position = { x: -0.8, y: 0.15, z: -1.4 };
+	let leader4Position = { x: -0.8, y: 0.15, z: -0.4 };
+	let leader5Position = { x: -0.7, y: 0.15, z: 1.2 };
 
 	const floorMaterial = new THREE.MeshPhongMaterial({ color: 0xf78a1d });
 	const edgeMaterial = new THREE.MeshPhongMaterial({ color: 0xFF0000 });
@@ -79,6 +92,47 @@ export function createBoard(textureObject, position, angle) {
 		mesh1.material.color.setHex(Math.random() * 0xffffff);
 	};
 	groupMesh.add(meshLeftEdge);
+
+	// between edge:
+	let geoBetweenEdge = new THREE.BoxGeometry(edge9Size.width, edge9Size.height, edge9Size.depth);
+	let meshBetweenEdge = new THREE.Mesh(geoBetweenEdge, edgeMaterial);
+	meshBetweenEdge.position.set(betweenEdgePosition.x, betweenEdgePosition.y, betweenEdgePosition.z);
+	meshBetweenEdge.name = 'edge';
+	meshBetweenEdge.collisionResponse = (mesh1) => {
+		mesh1.material.color.setHex(Math.random() * 0xffffff);
+	};
+	groupMesh.add(meshBetweenEdge);
+
+	// right edge:
+	let geoRightEdge = new THREE.BoxGeometry(edge1Size.width, edge1Size.height, edge1Size.depth);
+	let meshRightEdge = new THREE.Mesh(geoRightEdge, edgeMaterial);
+	meshRightEdge.position.set(rightEdgePosition.x, rightEdgePosition.y, rightEdgePosition.z);
+	meshRightEdge.name = 'edge';
+	meshRightEdge.collisionResponse = (mesh1) => {
+		mesh1.material.color.setHex(Math.random() * 0xffffff);
+	};
+	groupMesh.add(meshRightEdge);
+
+	// top edge:
+	let geoTopEdge = new THREE.BoxGeometry(edge4Size.width, edge4Size.height, edge4Size.depth);
+	let meshTopEdge = new THREE.Mesh(geoTopEdge, edgeMaterial);
+	meshTopEdge.position.set(topEdgePosition.x, topEdgePosition.y, topEdgePosition.z);
+	meshTopEdge.name = 'edge';
+	meshTopEdge.collisionResponse = (mesh1) => {
+		mesh1.material.color.setHex(Math.random() * 0xffffff);
+	};
+	groupMesh.add(meshTopEdge);
+
+	// bottom edge:
+	let geoBottomEdge = new THREE.BoxGeometry(edge5Size.width, edge5Size.height, edge5Size.depth);
+	let meshBottomEdge = new THREE.Mesh(geoBottomEdge, edgeMaterial);
+	meshBottomEdge.position.set(bottomEdgePosition.x, bottomEdgePosition.y, bottomEdgePosition.z);
+	meshBottomEdge.name = 'edge';
+	meshBottomEdge.collisionResponse = (mesh1) => {
+		mesh1.material.color.setHex(Math.random() * 0xffffff);
+	};
+	groupMesh.add(meshBottomEdge);
+
 	// Leader1:
 	let geoLeader1 = new THREE.BoxGeometry(edge2Size.width, edge2Size.height, edge2Size.depth);
 	let meshLeader1 = new THREE.Mesh(geoLeader1, edgeMaterial);
@@ -92,6 +146,27 @@ export function createBoard(textureObject, position, angle) {
 	meshLeader2.position.set(leader2Position.x, leader2Position.y, leader2Position.z);
 	meshLeader2.rotateY(Math.PI/12);
 	groupMesh.add(meshLeader2);
+
+	// Leader3:
+	let geoLeader3 = new THREE.BoxGeometry(edge6Size.width, edge6Size.height, edge6Size.depth);
+	let meshLeader3 = new THREE.Mesh(geoLeader3, edgeMaterial);
+	meshLeader3.position.set(leader3Position.x, leader3Position.y, leader3Position.z);
+	meshLeader3.rotateY(Math.PI/6);
+	groupMesh.add(meshLeader3);
+
+	// Leader4:
+	let geoLeader4 = new THREE.BoxGeometry(edge7Size.width, edge7Size.height, edge7Size.depth);
+	let meshLeader4 = new THREE.Mesh(geoLeader4, edgeMaterial);
+	meshLeader4.position.set(leader4Position.x, leader4Position.y, leader4Position.z);
+	meshLeader4.rotateY(Math.PI/3);
+	groupMesh.add(meshLeader4);
+
+	// Leader5:
+	let geoLeader5 = new THREE.BoxGeometry(edge8Size.width, edge8Size.height, edge8Size.depth);
+	let meshLeader5 = new THREE.Mesh(geoLeader5, edgeMaterial);
+	meshLeader5.position.set(leader5Position.x, leader5Position.y, leader5Position.z);
+	meshLeader5.rotateY(Math.PI/3);
+	groupMesh.add(meshLeader5);
 
 	// AMMO:
 	let compoundShape = new Ammo.btCompoundShape();
