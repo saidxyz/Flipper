@@ -7,6 +7,9 @@ import {ri} from "./script.js";
 
 export function createThreeScene() {
 	const canvas = document.createElement('canvas');
+	canvas.style.position = 'absolute';
+	canvas.style.left = 0;
+	canvas.style.top = 0;
 	document.body.appendChild(canvas);
 
 	// Renderer:

@@ -5,7 +5,7 @@
     <meta content="text/html; charset=utf-8" http-equiv="content-type"/>
     <title>Flipper, start</title>
 </head>
-<div style="top:10px; left:15px; width:100%; text-align:left; color:black;" class="ui">
+<div style="top:10px; left:15px; width:100%; text-align:left; color:black; position: absolute; z-index: 1; " class="ui">
     <h1>Flipper, start</h1>
     <button onclick="history.back()">Tilbake</button>
     <div>
@@ -19,7 +19,7 @@
         <span id="points">--</span><br>
     </div>
 </div>
-<body>
+<body style="overflow: hidden">
 
 <script src="./lib/ammo/ammo.js"></script>
 <script type="module">

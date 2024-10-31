@@ -18,20 +18,22 @@ import {createFlipperArm} from "./armHingeConstraint.js";
  * Bevegelser på flippere og kuler kan dermed virke litt trege. I så fall er det bare å gjør spillet mindre.
  * */
 export function createPinballGame(textureObjects, angle) {
-	const position={x:0, y:0, z:0}
 
+
+	const position={x:0, y:0, z:0}
 	createBoard(textureObjects[0], position, angle);
 
-	let flipperSize = {width: 1.1, height: 0.1, depth:0.1};
 
+
+	let flipperSize = {width: 1.1, height: 0.1, depth:0.1};
 	//Flipper1:
-	let position1 = {x: -1.3, y: 0.5, z: 2.0};//I forhold til at brettet står i posisjon 0,0,0
+	let position1 = {x: -1.3, y: 0, z: 2.0};	//I forhold til at brettet står i posisjon 0,0,0
 	createFlipperArm( 1, 0x00FF00, position1, true, "left_hinge_arm", angle, flipperSize);
 	//Flipper2:
-	//...
+	let position2 = {x: 1.3, y: 0, z: 2.0};	//I forhold til at brettet står i posisjon 0,0,0
+	createFlipperArm( 1, 0x00FF00, position2, false, "right_hinge_arm", angle, flipperSize);
 
 	addBumpers(angle);
-
 }
 
 /**
@@ -76,7 +78,7 @@ export function createBoard(textureObject, position, angle) {
 	};
 	groupMesh.add(meshLeftEdge);
 	// Leader1:
-	let geoLeader1 = new THREE.BoxGeometry(floorSize.width, floorSize.height, floorSize.depth);
+	let geoLeader1 = new THREE.BoxGeometry(edge2Size.width, edge2Size.height, edge2Size.depth);
 	let meshLeader1 = new THREE.Mesh(geoLeader1, edgeMaterial);
 	meshLeader1.position.set(leader1Position.x, leader1Position.y, leader1Position.z);
 	meshLeader1.rotateY(-Math.PI/4);

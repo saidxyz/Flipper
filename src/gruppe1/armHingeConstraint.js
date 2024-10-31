@@ -109,7 +109,13 @@ function createArm(mass, position, name, angle, size) {
 	mesh.userData.physicsBody = rigidBody;
 
 	// Legger til physics world:
-	//phy.ammoPhysicsWorld.addRigidBody(. . .);
+	phy.ammoPhysicsWorld.addRigidBody(
+		rigidBody,
+		COLLISION_GROUP_BOX,
+		COLLISION_GROUP_BOX |
+			COLLISION_GROUP_SPHERE |
+			COLLISION_GROUP_PLANE
+	);
 
 	addMeshToScene(mesh);
 	phy.rigidBodies.push(mesh);
@@ -142,7 +148,10 @@ function createAnchor(position, radius, angle) {
 	shape.setMargin( 0.5 );
 	const rigidBody = createAmmoRigidBody(shape, mesh, 0.4, 0.6, position, mass);
 	mesh.userData.physicsBody = rigidBody;
-	//phy.ammoPhysicsWorld.addRigidBody(. . .);
+	phy.ammoPhysicsWorld.addRigidBody(
+		rigidBody,
+		COLLISION_GROUP_SPHERE,
+		COLLISION_GROUP_SPHERE | COLLISION_GROUP_BOX | COLLISION_GROUP_BUMPER | COLLISION_GROUP_PLANE);
 	phy.rigidBodies.push(mesh);
 
 	addMeshToScene(mesh);
