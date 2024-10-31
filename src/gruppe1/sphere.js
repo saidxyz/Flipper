@@ -26,7 +26,14 @@ export function createSphere(mass = 0.05, color=0x0eFF09, position={x:0, y:0, z:
 	mesh.userData.physicsBody = rigidBody;
 
 	// Legger til physics world:
-	//phy.ammoPhysicsWorld.addRigidBody(. . . );
+	phy.ammoPhysicsWorld.addRigidBody(
+		rigidBody,
+		COLLISION_GROUP_SPHERE,
+			COLLISION_GROUP_SPHERE |
+			COLLISION_GROUP_BOX |
+			COLLISION_GROUP_PLANE |
+			COLLISION_GROUP_HINGE_SPHERE |
+			COLLISION_GROUP_BUMPER);
 
 	addMeshToScene(mesh);
 	phy.rigidBodies.push(mesh);
