@@ -19,17 +19,19 @@ import {createFlipperArm} from "./armHingeConstraint.js";
  * */
 export function createPinballGame(textureObjects, angle) {
 	const position={x:0, y:0, z:0}
+
 	createBoard(textureObjects[0], position, angle);
 
 	let flipperSize = {width: 1.1, height: 0.1, depth:0.1};
 
 	//Flipper1:
-	let position1 = {x: -1.3, y: 0, z: 2.0};	//I forhold til at brettet står i posisjon 0,0,0
+	let position1 = {x: -1.3, y: 0.5, z: 2.0};//I forhold til at brettet står i posisjon 0,0,0
 	createFlipperArm( 1, 0x00FF00, position1, true, "left_hinge_arm", angle, flipperSize);
 	//Flipper2:
 	//...
 
 	addBumpers(angle);
+
 }
 
 /**
@@ -51,6 +53,7 @@ export function createBoard(textureObject, position, angle) {
 
 	const floorMaterial = new THREE.MeshPhongMaterial({ color: 0xf78a1d });
 	const edgeMaterial = new THREE.MeshPhongMaterial({ color: 0xFF0000 });
+	const bumperMaterial = new THREE.MeshPhongMaterial({ color: 0x0ef21a, transparent: false });
 
 	// THREE:
 	let groupMesh = new THREE.Group();
@@ -98,8 +101,8 @@ export function createBoard(textureObject, position, angle) {
 	let transLeader1 = new Ammo.btTransform();
 	transLeader1.setIdentity();
 	transLeader1.setOrigin(new Ammo.btVector3(leader1Position.x, leader1Position.y, leader1Position.z));
-	let quaternion = meshLeader1.quaternion;
-	transLeader1.setRotation(new Ammo.btVector3(quaternion.x, quaternion.y, quaternion.z, quaternion.w));
+	let quaternion = new Ammo.btQuaternion(meshLeader1.quaternion.x, meshLeader1.quaternion.y, meshLeader1.quaternion.z, meshLeader1.quaternion.w);
+	transLeader1.setRotation(quaternion);
 	compoundShape.addChildShape(transLeader1, leader1Shape);
 
 	compoundShape.setMargin(0.05);
@@ -118,8 +121,8 @@ export function createBoard(textureObject, position, angle) {
  * Dette henger sammen med kollisjonshåndteringen. Se myAmmoHelper.js og checkCollisions-funksjonen.
  */
 function addBumpers(angle) {
-	let bumper1Size = {radiusTop:0.2, radiusBottom: 0.2, hight: .4};
-	let bumper1Position = {x: 0.45, y: bumper1Size.hight/2, z:1.3};
+	let bumper1Size = {radiusTop:0.2, radiusBottom: 0.2, height: 0.4};
+	let bumper1Position = {x: 0.45, y: bumper1Size.height/2, z:1.3};
 	bumper1Position.y += (-Math.tan(angle) * bumper1Position.z);
 	addBumper(angle, bumper1Size, bumper1Position, "bumper1", 200);
 	// osv...
@@ -130,12 +133,12 @@ function addBumpers(angle) {
  */
 function addBumper(angle, size, position, name, points) {
 	const material = new THREE.MeshPhongMaterial({color: 0x0ef21a, transparent: false});
-	let geoBumper = new THREE.CylinderGeometry(size.radiusTop, size.radiusBottom, size.hight);
+	let geoBumper = new THREE.CylinderGeometry(size.radiusTop, size.radiusBottom, size.height);
 	let meshBumper = new THREE.Mesh(geoBumper, material);
 	meshBumper.name =  name;
-	meshBumper.points = 0;
+	meshBumper.points = points;
 	meshBumper.collisionResponse = (mesh1) => {
-		meshBumper.points += meshBumper.points;
+		meshBumper.points += points;
 		document.getElementById('points').innerText = String(meshBumper.points);
 		mesh1.material.color.setHex(Math.random() * 0xffffff);
 	};
