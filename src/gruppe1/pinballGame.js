@@ -46,12 +46,13 @@ export function createBoard(textureObject, position, angle) {
 	let floorSize = { width: 3.4, height: 0.1, depth: 7.5 };
 	let edge1Size = { width: 0.1, height: 0.3, depth: 7.5 };
 	let edge2Size = { width: 3.4, height: 0.3, depth: 0.1 };
-	let edge3Size = { width: 3.4, height: 0.3, depth: 0.1 };
+	let edge3Size = { width: 1.8, height: 0.3, depth: 0.1 };
 	let leader1Size = { width: 1.3, height: 0.3, depth: 0.1 };
 
 	let floorPosition = { x: 0, y: 0, z: 0 };
 	let leftEdgePosition = { x: -1.65, y: 0.15, z: 0 };
 	let leader1Position = { x: 1.2, y: 0.15, z: -2.9 };
+	let leader2Position = { x: -0.8, y: 0.15, z: -2 };
 
 	const floorMaterial = new THREE.MeshPhongMaterial({ color: 0xf78a1d });
 	const edgeMaterial = new THREE.MeshPhongMaterial({ color: 0xFF0000 });
@@ -85,12 +86,12 @@ export function createBoard(textureObject, position, angle) {
 	meshLeader1.rotateY(-Math.PI/4);
 	groupMesh.add(meshLeader1);
 
-	// Leader1:
+	// Leader2:
 	let geoLeader2 = new THREE.BoxGeometry(edge3Size.width, edge3Size.height, edge3Size.depth);
 	let meshLeader2 = new THREE.Mesh(geoLeader2, edgeMaterial);
-	meshLeader1.position.set(leader1Position.x, leader1Position.y, leader1Position.z);
-	meshLeader1.rotateY(-Math.PI/4);
-	groupMesh.add(meshLeader1);
+	meshLeader2.position.set(leader2Position.x, leader2Position.y, leader2Position.z);
+	meshLeader2.rotateY(Math.PI/12);
+	groupMesh.add(meshLeader2);
 
 	// AMMO:
 	let compoundShape = new Ammo.btCompoundShape();
