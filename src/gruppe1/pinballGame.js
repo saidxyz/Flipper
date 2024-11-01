@@ -44,6 +44,7 @@ export function createBoard(textureObject, position, angle) {
 	const mass = 0;
 
 	let floorSize = { width: 4.4, height: 0.1, depth: 7.5 };
+	let floor2Size = { width: 4.4, height: 0.1, depth: 7.5 };
 	let edge1Size = { width: 0.1, height: 0.3, depth: 7.5 };
 	let edge2Size = { width: 2.2, height: 0.3, depth: 0.1 };
 	let edge3Size = { width: 1.8, height: 0.3, depth: 0.1 };
@@ -58,6 +59,7 @@ export function createBoard(textureObject, position, angle) {
 	let leader1Size = { width: -1.3, height: 0.3, depth: 0.1 };
 
 	let floorPosition = { x: 0.5, y: 0, z: 0 };
+	let floor2Position = { x: 0.5, y: 0.35, z: 0 };
 	let leftEdgePosition = { x: -1.65, y: 0.15, z: 0 };
 	let betweenEdgePosition = { x: 2, y: 0.15, z: 1 };
 	let rightEdgePosition = { x: 2.65, y: 0.15, z: 0 };
@@ -72,6 +74,7 @@ export function createBoard(textureObject, position, angle) {
 	let leader7Position = { x: 0.8, y: 0.15, z: -0.6 };
 
 	const floorMaterial = new THREE.MeshPhongMaterial({ color: 0xf78a1d });
+	const floor2Material = new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.25 });
 	const edgeMaterial = new THREE.MeshPhongMaterial({ color: 0xFF0000 });
 
 
@@ -80,12 +83,19 @@ export function createBoard(textureObject, position, angle) {
 	groupMesh.name = 'pinballBoard';
 	groupMesh.rotation.x = angle;
 
-	// Floor:
+	// Floor 1:
 	let geoFloor = new THREE.BoxGeometry(floorSize.width, floorSize.height, floorSize.depth);
 	let meshFloor = new THREE.Mesh(geoFloor, floorMaterial);
 	meshFloor.position.set(floorPosition.x, floorPosition.y, floorPosition.z);
 	meshFloor.castShadow = true;
 	groupMesh.add(meshFloor);
+
+	// Floor 2:
+	let geo2Floor = new THREE.BoxGeometry(floor2Size.width, floor2Size.height, floor2Size.depth);
+	let mesh2Floor = new THREE.Mesh(geo2Floor, floor2Material);
+	mesh2Floor.position.set(floor2Position.x, floor2Position.y, floor2Position.z);
+	mesh2Floor.castShadow = true;
+	groupMesh.add(mesh2Floor);
 
 	// Left edge:
 	let geoLeftEdge = new THREE.BoxGeometry(edge1Size.width, edge1Size.height, edge1Size.depth);
@@ -102,8 +112,8 @@ export function createBoard(textureObject, position, angle) {
 	let meshBetweenEdge = new THREE.Mesh(geoBetweenEdge, edgeMaterial);
 	meshBetweenEdge.position.set(betweenEdgePosition.x, betweenEdgePosition.y, betweenEdgePosition.z);
 	meshBetweenEdge.name = 'edge';
-	meshBetweenEdge.collisionResponse = (mesh1) => {
-		mesh1.material.color.setHex(Math.random() * 0xffffff);
+	meshBetweenEdge.collisionResponse = (mesh2) => {
+		mesh2.material.color.setHex(Math.random() * 0xffffff);
 	};
 	groupMesh.add(meshBetweenEdge);
 
@@ -189,18 +199,54 @@ export function createBoard(textureObject, position, angle) {
 	// AMMO:
 	let compoundShape = new Ammo.btCompoundShape();
 	let floorShape = new Ammo.btBoxShape(new Ammo.btVector3(floorSize.width/2, floorSize.height/2, floorSize.depth/2));
+	let floor2Shape = new Ammo.btBoxShape(new Ammo.btVector3(floor2Size.width/2, floor2Size.height/2, floor2Size.depth/2));
 	let leftEdgeShape = new Ammo.btBoxShape(new Ammo.btVector3(edge1Size.width/2, edge1Size.height/2, edge1Size.depth/2));
+	let betweenEdgeShape = new Ammo.btBoxShape(new Ammo.btVector3(edge1Size.width/2, edge1Size.height/2, edge1Size.depth/2));
+	let rightEdgeShape = new Ammo.btBoxShape(new Ammo.btVector3(edge1Size.width/2, edge1Size.height/2, edge1Size.depth/2));
+	let topEdgeShape = new Ammo.btBoxShape(new Ammo.btVector3(edge4Size.width/2, edge4Size.height/2, edge4Size.depth/2));
+	let bottomEdgeShape = new Ammo.btBoxShape(new Ammo.btVector3(edge5Size.width/2, edge5Size.height/2, edge5Size.depth/2));
 	let leader1Shape = new Ammo.btBoxShape(new Ammo.btVector3(leader1Size.width/2, leader1Size.height/2, leader1Size.depth/2));
+	let geoLeader2Shape = new Ammo.btBoxShape(new Ammo.btVector3(leader1Size.width/2, leader1Size.height/2, leader1Size.depth/2));
 
 	let transFloor = new Ammo.btTransform();
 	transFloor.setIdentity();
 	transFloor.setOrigin(new Ammo.btVector3(floorPosition.x, floorPosition.y, floorPosition.z));
 	compoundShape.addChildShape(transFloor, floorShape);
 
+	let trans2Floor = new Ammo.btTransform();
+	trans2Floor.setIdentity();
+	trans2Floor.setOrigin(new Ammo.btVector3(floor2Position.x, floor2Position.y, floor2Position.z));
+	compoundShape.addChildShape(trans2Floor, floor2Shape);
+
 	let transLeftEdge = new Ammo.btTransform();
 	transLeftEdge.setIdentity();
 	transLeftEdge.setOrigin(new Ammo.btVector3(leftEdgePosition.x, leftEdgePosition.y, leftEdgePosition.z));
 	compoundShape.addChildShape(transLeftEdge, leftEdgeShape);
+
+	let transBetweenEdge = new Ammo.btTransform();
+	transBetweenEdge.setIdentity();
+	transBetweenEdge.setOrigin(new Ammo.btVector3(betweenEdgePosition.x, betweenEdgePosition.y, betweenEdgePosition.z));
+	compoundShape.addChildShape(transBetweenEdge, betweenEdgeShape);
+
+	let transRightEdge = new Ammo.btTransform();
+	transRightEdge.setIdentity();
+	transRightEdge.setOrigin(new Ammo.btVector3(rightEdgePosition.x, rightEdgePosition.y, rightEdgePosition.z));
+	compoundShape.addChildShape(transRightEdge, rightEdgeShape);
+
+	let transBottomEdge = new Ammo.btTransform();
+	transBottomEdge.setIdentity();
+	transBottomEdge.setOrigin(new Ammo.btVector3(bottomEdgePosition.x, bottomEdgePosition.y, bottomEdgePosition.z));
+	compoundShape.addChildShape(transBottomEdge, bottomEdgeShape);
+
+	let transTopEdge = new Ammo.btTransform();
+	transTopEdge.setIdentity();
+	transTopEdge.setOrigin(new Ammo.btVector3(topEdgePosition.x, topEdgePosition.y, topEdgePosition.z));
+	compoundShape.addChildShape(transTopEdge, topEdgeShape);
+
+	let transGeoLeader1 = new Ammo.btTransform();
+	transGeoLeader1.setIdentity();
+	transGeoLeader1.setOrigin(new Ammo.btVector3(leader1Position.x, leader1Position.y, leader1Position.z));
+	compoundShape.addChildShape(transGeoLeader1, geoLeader2Shape);
 
 	let transLeader1 = new Ammo.btTransform();
 	transLeader1.setIdentity();
@@ -244,8 +290,8 @@ function addBumpers(angle) {
 
 
 	let bumper4Size = {radiusTop:0.1, radiusBottom: 0.1, height: 0.4};
-	let bumper4Position = {x: -0.35, y: bumper4Size.height/100, z:1.5};
-	bumper2Position.y += (-Math.tan(angle) * bumper4Position.z);
+	let bumper4Position = {x: -0.35, y: bumper4Size.height/2, z:1.5};
+	bumper4Position.y += (-Math.tan(angle) * bumper4Position.z);
 	addBumper(angle, bumper4Size, bumper4Position, "bumper4", 200);
 
 

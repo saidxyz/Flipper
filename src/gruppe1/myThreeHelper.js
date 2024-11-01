@@ -111,10 +111,12 @@ export function addLights() {
 export function handleKeys(delta) {
 	if (ri.currentlyPressedKeys['KeyH']) {
 		//createRandomSphere(200);
+		let angle = Math.PI/20;
+		let z = -3
 		createSphere(
 			.05,
 			0x0eFF09,
-			{x:-.2, y:.1, z:.2}
+			{x:2.2, y:-Math.tan(angle) * z + 0.2, z:z}
 		);
 	}
 
