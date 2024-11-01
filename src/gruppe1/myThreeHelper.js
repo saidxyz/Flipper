@@ -124,12 +124,26 @@ export function handleKeys(delta) {
 	let leftArmOppositeDirection = new THREE.Vector3();
 	leftArmMesh.getWorldDirection(leftArmOppositeDirection).multiplyScalar(-1);
 
-	// Gir flipperen et støt:
+	const rightArmMesh = ri.scene.getObjectByName("right_hinge_arm");
+	let rightArmDirection = new THREE.Vector3();
+	rightArmMesh.getWorldDirection(rightArmDirection);  // NB! worldDIRECTION! Gir en vektor som peker mot +Z. FRA DOC: Returns a vector representing the direction of object's positive z-axis in world space.
+	let rightArmOppositeDirection = new THREE.Vector3();
+	rightArmMesh.getWorldDirection(rightArmOppositeDirection).multiplyScalar(-1);
+
+	// Gir venstre flipperen et støt:
 	if (ri.currentlyPressedKeys['KeyV']) {
 		pushFlipper(leftArmMesh, leftArmOppositeDirection, true);
 	}
 	if (ri.currentlyPressedKeys['KeyB']) {
 		pushFlipper(leftArmMesh, leftArmDirection, true);
+	}
+
+	// Gir høyre flipperen et støt:
+	if (ri.currentlyPressedKeys['KeyN']) {
+		pushFlipper(rightArmMesh, rightArmOppositeDirection, false);
+	}
+	if (ri.currentlyPressedKeys['KeyM']) {
+		pushFlipper(rightArmMesh, rightArmDirection, false);
 	}
 }
 
