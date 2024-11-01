@@ -51,13 +51,13 @@ export function createBoard(textureObject, position, angle) {
 	let edge3Size = { width: 4.4, height: 0.3, depth: 0.1 };
 	let edge4Size = { width: 0.1, height: 0.3, depth: 5.5 };
 
-	let leader1Size = { width: 2.2, height: 0.3, depth: 0.1 };
-	let leader2Size = { width: 1.2, height: 0.3, depth: 0.1 };
-	let leader3Size = { width: 1.2, height: 0.3, depth: 0.1 };
-	let leader4Size = { width: 1.2, height: 0.3, depth: 0.1 };
-	let leader5Size = { width: 0.8, height: 0.3, depth: 0.1 };
-	let leader6Size = { width: 0.8, height: 0.3, depth: 0.1 };
-	let leader7Size = { width: 0.8, height: 0.3, depth: 0.1 };
+	let leader1Size = { width: 2.2, height: 1.3, depth: 0.1 };
+	let leader2Size = { width: 1.2, height: 1.3, depth: 0.1 };
+	let leader3Size = { width: 1.2, height: 1.3, depth: 0.1 };
+	let leader4Size = { width: 1.2, height: 1.3, depth: 0.1 };
+	let leader5Size = { width: 0.8, height: 1.3, depth: 0.1 };
+	let leader6Size = { width: 0.8, height: 1.3, depth: 0.1 };
+	let leader7Size = { width: 0.8, height: 1.3, depth: 0.1 };
 
 	let floorPosition = { x: 0.5, y: 0, z: 0 };
 	let floor2Position = { x: 0.5, y: 0.35, z: 0 };
@@ -349,6 +349,8 @@ function addBumpers(angle) {
 	addBumper(angle, bumper6Size, bumper6Position, "bumper6", 200);
 
 }
+
+
 
 /**
  * Legger til en bumper. Bumperen er en sylinder med radiusTop, radiusBottom og height.
