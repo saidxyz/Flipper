@@ -112,11 +112,11 @@ export function handleKeys(delta) {
 	if (ri.currentlyPressedKeys['KeyH']) {
 		//createRandomSphere(200);
 		let angle = Math.PI/20;
-		let z = 0
+		let z = -2
 		createSphere(
 			.05,
 			0x0eFF09,
-			{x:1., y:-Math.tan(angle) * z + 0.2, z:z}
+			{x:1.2, y:-Math.tan(angle) * z + 0.2, z:z}
 		);
 	}
 

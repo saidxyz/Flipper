@@ -218,11 +218,10 @@ export function createBoard(textureObject, position, angle) {
 	let leader7Shape = new Ammo.btBoxShape(new Ammo.btVector3(leader7Size.width/2, leader7Size.height/2, leader7Size.depth/2));
 
 
-
-	let transFloor = new Ammo.btTransform();
-	transFloor.setIdentity();
-	transFloor.setOrigin(new Ammo.btVector3(floorPosition.x, floorPosition.y, floorPosition.z));
-	compoundShape.addChildShape(transFloor, floorShape);
+	let trans1Floor = new Ammo.btTransform();
+	trans1Floor.setIdentity();
+	trans1Floor.setOrigin(new Ammo.btVector3(floorPosition.x, floorPosition.y, floorPosition.z));
+	compoundShape.addChildShape(trans1Floor, floorShape);
 
 	let trans2Floor = new Ammo.btTransform();
 	trans2Floor.setIdentity();
@@ -324,25 +323,20 @@ function addBumpers(angle) {
 	bumper1Position.y += (-Math.tan(angle) * bumper1Position.z);
 	addBumper(angle, bumper1Size, bumper1Position, "bumper1", 200);
 
-
 	let bumper2Size = {radiusTop:0.2, radiusBottom: 0.2, height: 0.4};
 	let bumper2Position = {x: 1, y: bumper2Size.height/2, z:1.3};
 	bumper2Position.y += (-Math.tan(angle) * bumper2Position.z);
 	addBumper(angle, bumper2Size, bumper2Position, "bumper2", 200);
-
 
 	let bumper3Size = {radiusTop:0.1, radiusBottom: 0.1, height: 0.4};
 	let bumper3Position = {x: -1, y: bumper3Size.height/2, z:1};
 	bumper3Position.y += (-Math.tan(angle) * bumper3Position.z);
 	addBumper(angle, bumper3Size, bumper3Position, "bumper3", 200);
 
-
 	let bumper4Size = {radiusTop:0.1, radiusBottom: 0.1, height: 0.4};
 	let bumper4Position = {x: -0.35, y: bumper4Size.height/2, z:1.5};
 	bumper4Position.y += (-Math.tan(angle) * bumper4Position.z);
 	addBumper(angle, bumper4Size, bumper4Position, "bumper4", 200);
-
-
 
 	let bumper5Size = {radiusTop:0.1, radiusBottom: 0.1, height: 0.4};
 	let bumper5Position = {x: 1.25, y: bumper5Size.height/2, z:-2};
@@ -353,7 +347,6 @@ function addBumpers(angle) {
 	let bumper6Position = {x: 0.8, y: bumper6Size.height/2, z:-2};
 	bumper6Position.y += (-Math.tan(angle) * bumper6Position.z);
 	addBumper(angle, bumper6Size, bumper6Position, "bumper6", 200);
-
 
 }
 
@@ -375,6 +368,14 @@ function addBumper(angle, size, position, name, points) {
 	meshBumper.rotation.x = angle;
 
 	addMeshToScene(meshBumper);
+	let mass = 0
+	let bumperShape = new Ammo.btCylinderShape(new Ammo.btVector3(size.radiusTop, size.radiusBottom, size.height, size.width, size.radialSegments, size.openEnded, size.thetaStart, size.thetaLength));
 	// Sørg for "fysikk" på denne.
 	// Tips: Bruk createAmmoRigidBody(...)
+	let rigidBody = createAmmoRigidBody(bumperShape, meshBumper, 0.2, 0.9, position, mass);
+	meshBumper.userData.physicsBody = rigidBody;
+	// Legger til physics world:
+	phy.ammoPhysicsWorld.addRigidBody(rigidBody, COLLISION_GROUP_BUMPER, COLLISION_GROUP_SPHERE);
+	phy.rigidBodies.push(meshBumper);
+	rigidBody.threeMesh = meshBumper;
 }
