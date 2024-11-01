@@ -6,7 +6,7 @@ import {
 	createAmmoRigidBody,
 	phy
 } from "./myAmmoHelper.js";
-import {addMeshToScene} from "./myThreeHelper.js";
+import {addMeshToScene, removeMeshFromScene} from "./myThreeHelper.js";
 import {createFlipperArm} from "./armHingeConstraint.js";
 
 /**
@@ -142,12 +142,21 @@ export function createBoard(textureObject, position, angle) {
 	// bottom edge:
 	let geoBottomEdge = new THREE.BoxGeometry(edge3Size.width, edge3Size.height, edge3Size.depth);
 	let meshBottomEdge = new THREE.Mesh(geoBottomEdge, edgeMaterial);
-	meshBottomEdge.position.set(bottomEdgePosition.x, bottomEdgePosition.y, bottomEdgePosition.z);
-	meshBottomEdge.name = 'edge';
-	meshBottomEdge.collisionResponse = (mesh1) => {
-		mesh1.material.color.setHex(Math.random() * 0xffffff);
+	meshBottomEdge.position.set(bottomEdgePosition.x, bottomEdgePosition.y + (-Math.tan(angle) * bottomEdgePosition.z), bottomEdgePosition.z);
+	meshBottomEdge.name = 'bottom';
+	meshBottomEdge.collisionResponse = (mesh) => {
+		removeMeshFromScene(mesh)
 	};
-	groupMesh.add(meshBottomEdge);
+	meshBottomEdge.rotation.x = angle;
+	let bottomEdgeShape = new Ammo.btBoxShape(new Ammo.btVector3(edge3Size.width, edge3Size.height, edge3Size.depth));
+	let bottomEdgeRigidBody = createAmmoRigidBody(bottomEdgeShape, meshBottomEdge, 0.2, 0.9, meshBottomEdge.position, mass);
+	meshBottomEdge.userData.physicsBody = bottomEdgeRigidBody;
+	// Legger til physics world:
+	phy.ammoPhysicsWorld.addRigidBody(bottomEdgeRigidBody, COLLISION_GROUP_PLANE, COLLISION_GROUP_SPHERE);
+	addMeshToScene(meshBottomEdge);
+	phy.rigidBodies.push(meshBottomEdge);
+	bottomEdgeRigidBody.threeMesh = meshBottomEdge;
+	//groupMesh.add(meshBottomEdge);
 
 	// Leader1:
 	let geoLeader1 = new THREE.BoxGeometry(leader1Size.width, leader1Size.height, leader1Size.depth);
@@ -207,7 +216,6 @@ export function createBoard(textureObject, position, angle) {
 	let betweenEdgeShape = new Ammo.btBoxShape(new Ammo.btVector3(edge1Size.width/2, edge1Size.height/2, edge1Size.depth/2));
 	let rightEdgeShape = new Ammo.btBoxShape(new Ammo.btVector3(edge1Size.width/2, edge1Size.height/2, edge1Size.depth/2));
 	let topEdgeShape = new Ammo.btBoxShape(new Ammo.btVector3(edge2Size.width/2, edge2Size.height/2, edge2Size.depth/2));
-	let bottomEdgeShape = new Ammo.btBoxShape(new Ammo.btVector3(edge3Size.width/2, edge3Size.height/2, edge3Size.depth/2));
 
 	let leader1Shape = new Ammo.btBoxShape(new Ammo.btVector3(leader1Size.width/2, leader1Size.height/2, leader1Size.depth/2));
 	//let leader2Shape = new Ammo.btBoxShape(new Ammo.btVector3(leader2Size.width/2, leader2Size.height/2, leader2Size.depth/2));
@@ -243,10 +251,10 @@ export function createBoard(textureObject, position, angle) {
 	transRightEdge.setOrigin(new Ammo.btVector3(rightEdgePosition.x, rightEdgePosition.y, rightEdgePosition.z));
 	compoundShape.addChildShape(transRightEdge, rightEdgeShape);
 
-	let transBottomEdge = new Ammo.btTransform();
-	transBottomEdge.setIdentity();
-	transBottomEdge.setOrigin(new Ammo.btVector3(bottomEdgePosition.x, bottomEdgePosition.y, bottomEdgePosition.z));
-	compoundShape.addChildShape(transBottomEdge, bottomEdgeShape);
+	//let transBottomEdge = new Ammo.btTransform();
+	//transBottomEdge.setIdentity();
+	//transBottomEdge.setOrigin(new Ammo.btVector3(bottomEdgePosition.x, bottomEdgePosition.y, bottomEdgePosition.z));
+	//compoundShape.addChildShape(transBottomEdge, bottomEdgeShape);
 
 	let transTopEdge = new Ammo.btTransform();
 	transTopEdge.setIdentity();
@@ -304,7 +312,7 @@ export function createBoard(textureObject, position, angle) {
 
 	//compoundShape.setMargin(0.05);
 
-	let rigidBody = createAmmoRigidBody(compoundShape, groupMesh, 0.2, 0.9, position, mass);
+	let rigidBody = createAmmoRigidBody(compoundShape, groupMesh, 1, 0, position, mass);
 	groupMesh.userData.physicsBody = rigidBody;
 	// Legger til physics world:
 	phy.ammoPhysicsWorld.addRigidBody(rigidBody, COLLISION_GROUP_PLANE, COLLISION_GROUP_SPHERE);
@@ -397,8 +405,8 @@ function addBumper(angle, size, position, name, points, type = "cylinder", angle
 	meshBumper.name =  name;
 	meshBumper.points = points;
 	meshBumper.collisionResponse = (mesh1) => {
-		meshBumper.points += points;
-		document.getElementById('points').innerText = String(meshBumper.points);
+		//meshBumper.points += points;
+		document.getElementById('points').innerText = "" + (+document.getElementById('points').innerText + points);
 		mesh1.material.color.setHex(Math.random() * 0xffffff);
 	};
 	meshBumper.position.set(position.x, position.y, position.z);

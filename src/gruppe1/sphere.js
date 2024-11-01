@@ -38,6 +38,7 @@ export function createSphere(mass = 0.05, color=0x0eFF09, position={x:0, y:0, z:
 	addMeshToScene(mesh);
 	phy.rigidBodies.push(mesh);
 	rigidBody.threeMesh = mesh;
+	return mesh
 }
 
 export function pushBall(mesh, velocity) {
