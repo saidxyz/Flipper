@@ -53,6 +53,8 @@ export function createBoard(textureObject, position, angle) {
 					let edge3Size = {width: 4.4, height: 0.3, depth: 0.1};
 					let edge4Size = {width: 0.1, height: 0.3, depth: 5.5};
 
+					let shooter = {width: 0.3, height: 0.4, depth: 0.5};
+
 					let leader1Size = {width: 2.2, height: 0.3, depth: 0.1};
 					let leader2Size = {width: 1.2, height: 0.3, depth: 0.1};
 					let leader3Size = {width: 2.1, height: 0.3, depth: 0.1};
@@ -61,7 +63,7 @@ export function createBoard(textureObject, position, angle) {
 					let lowerLayout = {width: 4.4, height: 1.3, depth: 0.1};
 					let sideLayout = {width: 0.1, height: 1.3, depth: 7.6};
 
-					let legSize = { radiusTop: 0.1, radiusBottom: 0.1, height: 3.0 };
+					let legSize = { radiusTop: 0.1, radiusBottom: 0.2, height: 3.0 };
 
 					let floorPosition = {x: 0.5, y: 0, z: 0};
 					let floor2Position = {x: 0.5, y: 0.35, z: 0};
@@ -74,6 +76,8 @@ export function createBoard(textureObject, position, angle) {
 					let leader1Position = {x: 1.89, y: 0.15, z: -2.9};
 					let leader2Position = {x: -1.49, y: 0.15, z: 1.4}
 					let leader3Position = {x: 1.65, y: 0.15, z: 0.95}
+
+					let shooterPosition = {x: 2.35, y: 0.15, z: 3.5};
 
 					let upperLayoutPosition = {x: 0.5, y: 1.29, z: -4.05};
 					let lowerLayoutPosition = {x: 0.5, y: -0.25, z: 3.8};
@@ -170,6 +174,13 @@ export function createBoard(textureObject, position, angle) {
 					meshBetweenEdge.position.set(betweenEdgePosition.x, betweenEdgePosition.y, betweenEdgePosition.z);
 					meshBetweenEdge.name = 'edge';
 					groupMesh.add(meshBetweenEdge);
+
+					// shooter:
+					let geoShooter = new THREE.BoxGeometry(shooter.width, shooter.height, shooter.depth);
+					let meshShooter = new THREE.Mesh(geoShooter, metalMaterial);
+					meshShooter.position.set(shooterPosition.x, shooterPosition.y, shooterPosition.z);
+					meshShooter.name = 'edge';
+					groupMesh.add(meshShooter);
 
 					// right edge:
 					let geoRightEdge = new THREE.BoxGeometry(edge1Size.width, edge1Size.height, edge1Size.depth);
