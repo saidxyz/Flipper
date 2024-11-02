@@ -111,7 +111,6 @@ export function addLights() {
 //Sjekker tastaturet:
 export function handleKeys(delta) {
 	if (ri.currentlyPressedKeys['KeyH']) {
-		//createRandomSphere(200);
 		let angle = Math.PI/20;
 		let z = 3
 		clearTimeout(ri.myTimeout)
@@ -122,7 +121,6 @@ export function handleKeys(delta) {
 				let mySphere = createSphere(
 					.05,
 					0x0eFF09,
-					//{x: 2.2, y: -Math.tan(angle) * z + 0.2, z: z}
 					{x: 2.2, y: -Math.tan(angle) * z + 0.2, z: z}
 				);
 				pushBall(mySphere, {x: -1, y: 1, z: -10});
