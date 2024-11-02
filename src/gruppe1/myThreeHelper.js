@@ -120,7 +120,7 @@ export function handleKeys(delta) {
 				document.getElementById("points").innerText = "0";
 				let mySphere = createSphere(
 					.05,
-					0x0eFF09,
+					0x000000,
 					{x: 2.2, y: -Math.tan(angle) * z + 0.2, z: z}
 				);
 				pushBall(mySphere, {x: -1, y: 1, z: -10});
@@ -172,8 +172,8 @@ export function removeMeshFromScene(mesh){
 	phy.rigidBodies.splice(phy.rigidBodies.indexOf(mesh),1)
 	mesh.geometry.dispose();
 	mesh.material.dispose();
-	ri.scene.remove(mesh)
-	ri.balls = 0
+	ri.scene.remove(mesh);
+	ri.balls = 0;
 }
 
 export function renderScene()

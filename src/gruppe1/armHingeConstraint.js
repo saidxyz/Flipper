@@ -85,7 +85,7 @@ function createArm(mass, position, name, angle, size) {
 	//THREE
 	const mesh = new THREE.Mesh(
 		new THREE.BoxGeometry(width,height,depth, 1, 1),
-		new THREE.MeshStandardMaterial({color: 0xf906e4}));
+		new THREE.MeshStandardMaterial({color: 0xff0000}));
 	mesh.name = name;
 	mesh.position.set(position.x, position.y, position.z);
 	mesh.castShadow = true;
@@ -125,7 +125,7 @@ function createArm(mass, position, name, angle, size) {
 
 function createAnchor(position, radius, angle) {
 	const mass = 0;
-	const color=0xb8Fddb;
+	const color=0x000000;
 
 	// Løfter kula/hengslet litt over planet:
 	position.y += radius;

@@ -434,7 +434,7 @@ function addBumpers(angle) {
  * Legger til en bumper. Bumperen er en sylinder med radiusTop, radiusBottom og height.
  */
 function addBumper(angle, size, position, name, points, type = "cylinder", angleY = 0) {
-	const material = new THREE.MeshPhongMaterial({color: 0x0ef21a, transparent: false});
+	const material = new THREE.MeshPhongMaterial({color: 0x800080, transparent: false});
 	let geoBumper
 	if (type == "cylinder") {
 		geoBumper = new THREE.CylinderGeometry(size.radiusTop, size.radiusBottom, size.height, size.width, size.radialSegments, size.openEnded, size.thetaStart, size.thetaLength);
