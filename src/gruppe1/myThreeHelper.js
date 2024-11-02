@@ -60,7 +60,7 @@ export function createThreeScene() {
 
 export function addLights() {
 	// Ambient:
-	let ambientLight1 = new THREE.AmbientLight(0xffffff, 0.7);
+	let ambientLight1 = new THREE.AmbientLight(0xffffff, 0.5);
 	ambientLight1.visible = true;
 	ri.scene.add(ambientLight1);
 	const ambientFolder = ri.lilGui.addFolder( 'Ambient Light' );
@@ -69,7 +69,7 @@ export function addLights() {
 	ambientFolder.addColor(ambientLight1, 'color').name("Color");
 
 	//** RETNINGSORIENTERT LYS (som gir skygge):
-	let directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);
+	let directionalLight = new THREE.DirectionalLight(0xff0000, 0.1);
 	directionalLight.visible = true;
 	ri.scene.add(directionalLight);
 	directionalLight.position.set(0, 20, 0);
@@ -86,7 +86,7 @@ export function addLights() {
 	ri.scene.add(directionalLight);
 
 	//** POINTLIGHT:
-	let pointLight = new THREE.PointLight(0xffffff, 1000);
+	let pointLight = new THREE.PointLight(0xffffff, 360);
 	pointLight.visible = true;
 	pointLight.position.set(0, 15, 0);
 	pointLight.shadow.camera.near = 10;
@@ -123,7 +123,7 @@ export function handleKeys(delta) {
 					.05,
 					0x0eFF09,
 					//{x: 2.2, y: -Math.tan(angle) * z + 0.2, z: z}
-					{x: 1.2, y: -Math.tan(angle) * z + 0.2, z: z}
+					{x: 2.2, y: -Math.tan(angle) * z + 0.2, z: z}
 				);
 				pushBall(mySphere, {x: -1, y: 1, z: -10});
 			}
