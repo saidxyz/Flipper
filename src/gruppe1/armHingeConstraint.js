@@ -39,11 +39,11 @@ export function createFlipperArm(mass , color, position, leftHinged, name, angle
 		false
 	);
 
-	const lowerLimit = -Math.PI/3;
-	const upperLimit = Math.PI/3;
+	const lowerLimit = -Math.PI/8;
+	const upperLimit = Math.PI/8;
 	const softness = 0.1;
 	const biasFactor = 0.3;
-	const relaxationFactor = 1.0;
+	const relaxationFactor = 3.0;
 	hingeConstraint.setLimit( lowerLimit, upperLimit, softness, biasFactor, relaxationFactor);
 	phy.ammoPhysicsWorld.addConstraint( hingeConstraint, false );
 
@@ -93,7 +93,7 @@ function createArm(mass, position, name, angle, size) {
 	mesh.rotation.x = angle;
 	const direction = new THREE.Vector3();
 	mesh.getWorldDirection(direction);  // NB! WorldDirection gir en vektor som peker mot +Z. FRA DOC: Returns a vector representing the direction of object's positive z-axis in world space.
-	addArrowHelper(mesh, direction.normalize(), new THREE.Vector3( 0, 0, 0 ), 'worlddirection_arrow', 0xff0000, 0.5);
+	//addArrowHelper(mesh, direction.normalize(), new THREE.Vector3( 0, 0, 0 ), 'worlddirection_arrow', 0xff0000, 0.5);
 
 	//AMMO
 	const mesh_width = mesh.geometry.parameters.width;
@@ -180,6 +180,6 @@ export function pushFlipper(mesh, direction, leftHinged=true) {
 		relativeVector = new Ammo.btVector3(-armWidth/2, 0, 0);
 
 	// Gir impuls i retning av armen:
-	const impulseVector = new Ammo.btVector3(0.2*direction.x, 0, 0.2*direction.z);
+	const impulseVector = new Ammo.btVector3(direction.x, 0, direction.z);
 	rigidBody.applyImpulse(impulseVector, relativeVector);
 }

@@ -38,16 +38,25 @@ export function createSphere(mass = 0.05, color=0x0eFF09, position={x:0, y:0, z:
 	addMeshToScene(mesh);
 	phy.rigidBodies.push(mesh);
 	rigidBody.threeMesh = mesh;
+	return mesh
 }
 
 export function pushBall(mesh, velocity) {
-	if (!mesh.userData.physicsBody)
-		return;
+	if (!mesh.userData.physicsBody) return;
+	let speed = Math.sqrt(velocity.x^2 + velocity.y^2 + velocity.z^2);
+	if (speed < 8){
+		const scalingFactor = 0.05;
+		let relativeVector = new Ammo.btVector3(0, 0, 0);
 
-	let relativeVector = new Ammo.btVector3(0, 0, 0);
-	let impulseVector = new Ammo.btVector3(velocity.x * 0.05, velocity.y * 0.05, velocity.z * 0.05);
+		let impulseVector = new Ammo.btVector3(
+			(velocity.x * scalingFactor),
+			(velocity.y * scalingFactor),
+			(velocity.z * scalingFactor)
+		);
 
-	const rigidBody = mesh.userData.physicsBody;
-	rigidBody.activate(true);
-	rigidBody.applyImpulse(impulseVector, relativeVector);
+		const rigidBody = mesh.userData.physicsBody;
+		rigidBody.activate(true);
+		rigidBody.applyImpulse(impulseVector, relativeVector);
+	}
+
 }

@@ -12,7 +12,9 @@ export const ri = {
 	camera: undefined,
 	clock: undefined,
 	controls: undefined,
-	lilGui: undefined
+	lilGui: undefined,
+	balls: 0,
+	myTimeout: 0
 };
 
 export function main() {
